@@ -1,3 +1,5 @@
 <Solution>
+  <Project Path="../Kanban.Application/Kanban.Application.csproj" />
+  <Project Path="../Kanban.Domain/Kanban.Domain.csproj" />
   <Project Path="Kanban.Api.csproj" />
 </Solution>
