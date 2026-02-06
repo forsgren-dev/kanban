@@ -1,7 +1,7 @@
 <Solution>
   <Folder Name="/src/">
-    <Project Path="../Kanban.Application/Kanban.Application.csproj" />
-    <Project Path="../Kanban.Domain/Kanban.Domain.csproj" />
-    <Project Path="Kanban.Api.csproj" />
+    <Project Path="src/Kanban.Domain/Kanban.Domain.csproj" />
+    <Project Path="src/Kanban.Application/Kanban.Application.csproj" />
+    <Project Path="src/Kanban.Api/Kanban.Api.csproj" />
   </Folder>
 </Solution>

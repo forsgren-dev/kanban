@@ -1,0 +1,12 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Kanban.Domain.Boards;
+namespace Kanban.Application.Boards.Ports
+{
+    internal interface IBoardRepository
+    {
+        Task Save(Board board, CancellationToken ct);
+        Task<Board?> GetById(Guid boardId, CancellationToken ct);
+    }
+}
