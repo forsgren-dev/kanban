@@ -11,7 +11,7 @@ namespace Kanban.Application.Boards.UseCases
         /// </summary>
         private readonly IBoardRepository _boardRepository;
 
-        /// Constructor for AddCard, which takes an IBoardRepository as a parameter.
+        /// Constructor for AddCard, which takes an IBoardRepository as a parameter
         public AddCard(IBoardRepository boardRepository)
         {
             _boardRepository = boardRepository;

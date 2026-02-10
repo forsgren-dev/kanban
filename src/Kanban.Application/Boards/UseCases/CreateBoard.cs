@@ -9,7 +9,7 @@ namespace Kanban.Application.Boards.UseCases
         // Could be in a Service layer, but I am putting it here for simplicity
         private readonly IBoardRepository _boardRepository;
 
-        // Constructor for CreateBoard, which takes an IBoardRepository as a parameter.
+        // Constructor for CreateBoard, which takes an IBoardRepository as a parameter
         public CreateBoard(IBoardRepository boardRepository)
         {
             _boardRepository = boardRepository;

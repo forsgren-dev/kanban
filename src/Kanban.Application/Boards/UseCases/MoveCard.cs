@@ -6,10 +6,10 @@ namespace Kanban.Application.Boards.UseCases
     public sealed class MoveCard
     {
 
-        // Dependency injection of the board repository to access and modify board data.
+        // Dependency injection of the board repository to access and modify board data
         private readonly IBoardRepository _boardRepository;
 
-        // Constructor for MoveCard, which takes an IBoardRepository as a parameter.
+        // Constructor for MoveCard, which takes an IBoardRepository as a parameter
         public MoveCard(IBoardRepository boardRepository)
         {
             _boardRepository = boardRepository;

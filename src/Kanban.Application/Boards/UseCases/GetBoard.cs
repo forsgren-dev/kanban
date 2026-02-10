@@ -8,7 +8,7 @@ namespace Kanban.Application.Boards.UseCases
         // Dependency Injection
         private readonly IBoardRepository _boardRepository;
 
-        // Constructor for GetBoard, which takes an IBoardRepository as a parameter.
+        // Constructor for GetBoard, which takes an IBoardRepository as a parameter
         public GetBoard(IBoardRepository boardRepository)
         {
             _boardRepository = boardRepository;
