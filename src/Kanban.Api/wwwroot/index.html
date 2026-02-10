@@ -1,4 +1,233 @@
-﻿<!DOCTYPE html>
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Kanban</title>
+    <style>
+        body {
+            font-family: system-ui;
+            margin: 20px;
+            background-color: beige;
+        }
+        .row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+
+        .board {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .col {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 12px;
+            width: 300px;
+        }
+
+        .card {
+            border: 1px solid #000;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 14px 0;
+            background-color: #f7f7f7;
+        }
+
+        .muted {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        input, button, select {
+            padding: 8px;
+        }
+
+        code {
+            
+            padding: 2px 6px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Kanban - v0.1</h1>
+
+    <div class="row">
+        <input id="boardName" placeholder="Board name" />
+        <button onclick="createBoard()">Create board</button>
+
+        <span class="muted"> - </span>
+        <input id="boardIdInput" placeholder="Board-ID (guid)" size="40" />
+        <button onclick="loadBoard()">Load</button>
+    </div>
+
+    <div class="row">
+        <span>Board-ID:</span>
+        <code id="boardId">-</code>
+    </div>
+
+    <div class="row">
+        <input id="cardTitle" placeholder="Card title" />
+        <input id="cardDesc" placeholder="Description" />
+        <button onclick="addCard()">Add card</button>
+    </div>
+
+    <hr />
+
+    <div class="board" id="board"></div>
+
+    <script>
+    let currentBoardId = null;
+    let columns = [];
+
+    async function createBoard() {
+      const name = document.getElementById('boardName').value.trim();
+      if (!name) return alert("Board name required.");
+
+      const res = await fetch('/boards', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name })
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        return alert("Create board failed: " + text);
+      }
+
+      const data = await res.json();
+      currentBoardId = data.id;
+      document.getElementById('boardId').textContent = currentBoardId;
+      document.getElementById('boardIdInput').value = currentBoardId;
+
+      await refresh();
+    }
+
+    async function loadBoard() {
+      const id = document.getElementById('boardIdInput').value.trim();
+      if (!id) return alert("BoardId required.");
+
+      currentBoardId = id;
+      document.getElementById('boardId').textContent = currentBoardId;
+
+      await refresh();
+    }
+
+    async function addCard() {
+      if (!currentBoardId) return alert("Create or load a board first.");
+
+      const title = document.getElementById('cardTitle').value.trim();
+      const description = document.getElementById('cardDesc').value.trim();
+
+      if (!title) return alert("Title required.");
+
+      const res = await fetch(`/boards/${currentBoardId}/cards`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, description })
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        return alert("Add card failed: " + text);
+      }
+
+      document.getElementById('cardTitle').value = "";
+      document.getElementById('cardDesc').value = "";
+
+      await refresh();
+    }
+
+    async function moveCard(cardId, targetColumnId) {
+      if (!currentBoardId) return;
+
+      const res = await fetch(`/boards/${currentBoardId}/cards/${cardId}/move`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ targetColumnId })
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        alert("Move failed: " + text);
+        return;
+      }
+
+      await refresh();
+    }
+
+    async function refresh() {
+      if (!currentBoardId) return;
+
+      const res = await fetch(`/boards/${currentBoardId}`);
+      if (res.status === 404) {
+        document.getElementById('board').innerHTML = "<p>Board not found (maybe you restarted the app?).</p>";
+        return;
+      }
+      if (!res.ok) {
+        const text = await res.text();
+        return alert("Load failed: " + text);
+      }
+
+      const data = await res.json();
+      columns = (data.columns || []).slice().sort((a,b)=>a.order-b.order);
+
+      const boardEl = document.getElementById('board');
+      boardEl.innerHTML = "";
+
+      for (const col of columns) {
+        const colEl = document.createElement('div');
+        colEl.className = 'col';
+        colEl.innerHTML = `<h3>${col.name}</h3><div class="muted"><code>${col.id}</code></div>`;
+
+        const colCards = (data.cards || []).filter(c => c.columnId === col.id);
+
+        for (const card of colCards) {
+          const cardEl = document.createElement('div');
+          cardEl.className = 'card';
+
+          const opts = columns.map(c =>
+            `<option value="${c.id}" ${c.id === card.columnId ? "selected" : ""}>${c.name}</option>`
+          ).join("");
+
+          cardEl.innerHTML = `
+            <div><strong>${escapeHtml(card.title)}</strong></div>
+            <div class="muted">${escapeHtml(card.description ?? "")}</div>
+            <div class="row">
+              <span class="muted">Move to:</span>
+              <select data-cardid="${card.id}">
+                ${opts}
+              </select>
+            </div>
+            <div class="muted">CardId: <code>${card.id}</code></div>
+          `;
+
+          const select = cardEl.querySelector('select');
+          select.addEventListener('change', async (e) => {
+            const toColumnId = e.target.value;
+            await moveCard(card.id, toColumnId);
+          });
+
+          colEl.appendChild(cardEl);
+        }
+
+        boardEl.appendChild(colEl);
+      }
+    }
+
+    function escapeHtml(str) {
+      return (str ?? "").replace(/[&<>"']/g, (m) => ({
+        "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;"
+      }[m]));
+    }
+    </script>
+</body>
+</html>
 <html>
 <head>
     <meta charset="utf-8" />

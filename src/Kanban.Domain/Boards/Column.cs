@@ -6,7 +6,13 @@
         public string Name { get; }
         public int Order { get; }
 
-
+        /// <summary>
+        /// Column represents a vertical section on the Kanban board, such as "Todo", "Doing", or "Done".
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="order"></param>
+        /// <exception cref="ArgumentException"></exception>
         public Column(Guid id, string name, int order)
         {
             if (id == Guid.Empty)

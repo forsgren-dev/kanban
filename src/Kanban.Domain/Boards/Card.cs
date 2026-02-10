@@ -7,7 +7,14 @@
         public string? Description { get; private set; }
         public Guid ColumnId { get; private set; }
 
-
+        /// <summary>
+        /// Card represents a task or item on the Kanban board. It belongs to a specific column.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="title"></param>
+        /// <param name="description"></param>
+        /// <param name="columnId"></param>
+        /// <exception cref="ArgumentException"></exception>
         public Card(Guid id, string title, string? description, Guid columnId)
         {
             if (id == Guid.Empty)
@@ -23,7 +30,11 @@
             ColumnId = columnId;
 
         }
-
+        /// <summary>
+        /// Move the card to a different column by updating its ColumnId. 
+        /// The new ColumnId must correspond to an existing column on the board.
+        /// </summary>
+        /// <param name="columnId"></param>
         public void MoveTo(Guid columnId) => ColumnId = columnId;
 
 

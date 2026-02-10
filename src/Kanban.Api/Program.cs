@@ -17,7 +17,7 @@ namespace Kanban
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // Dependency Injection
+            // Dependency injection
             builder.Services.AddSingleton<IBoardRepository, InMemoryBoardRepository>();
             builder.Services.AddTransient<CreateBoard>();
             builder.Services.AddTransient<GetBoard>();
@@ -25,15 +25,16 @@ namespace Kanban
             builder.Services.AddTransient<MoveCard>();
 
             var app = builder.Build();
-            app.UseDefaultFiles();   // gör att index.html hittas automatiskt
-            app.UseStaticFiles();    // aktiverar wwwroot
+            app.UseDefaultFiles();   
+            app.UseStaticFiles();    
 
-            // Configure the HTTP request pipeline.
+            // Configure the HTTP request pipeline
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            
             app.UseHttpsRedirection();
 
             // Endpoint POST /boards
@@ -80,6 +81,7 @@ namespace Kanban
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound);
 
+            //Endpoint POST /boards/{id}/cards/{cardId}/move
             app.MapPost("/boards/{id:guid}/cards/{cardId:guid}/move", async (
                 Guid id, Guid cardId, MoveCardRequest req, MoveCard useCase, CancellationToken ct) =>
             {

@@ -13,7 +13,12 @@
 
         private Board()
         { }
-
+        /// <summary>
+        /// Create a new board with the specified name and default columns (Todo, Doing, Done).
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
         public static Board Create(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -32,7 +37,6 @@
 
             return board;
         }
-
 
         /// <summary>
         /// Add a new card to the board. 
