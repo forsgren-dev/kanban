@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Kanban.Domain.Boards
+﻿namespace Kanban.Domain.Boards
 {
     public sealed class Card
     {
@@ -14,7 +10,7 @@ namespace Kanban.Domain.Boards
 
         public Card(Guid id, string title, string? description, Guid columnId)
         {
-            if (id == Guid.Empty)       
+            if (id == Guid.Empty)
                 throw new ArgumentException("Id cannot be empty.", nameof(id));
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentException("Title cannot be empty.", nameof(title));

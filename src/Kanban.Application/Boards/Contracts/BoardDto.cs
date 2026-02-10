@@ -1,7 +1,4 @@
 ﻿using Kanban.Domain.Boards;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Kanban.Application.Boards.Contracts
 {
@@ -9,7 +6,8 @@ namespace Kanban.Application.Boards.Contracts
         Guid Id,
         string Name,
         IReadOnlyList<ColumnDto> Columns,
-        IReadOnlyList<CardDto> Cards)
+        IReadOnlyList<CardDto> Cards
+        )
     {
         public static BoardDto From(Board board)
         {
@@ -25,7 +23,6 @@ namespace Kanban.Application.Boards.Contracts
                 );
         }
     }
-    
 
     public sealed record ColumnDto(
         Guid Id,
@@ -33,11 +30,11 @@ namespace Kanban.Application.Boards.Contracts
         int Order
         );
 
-        public sealed record CardDto(
-            Guid Id,
-            string Title,
-            string? Description,
-            Guid ColumnId
-        );
-    
+    public sealed record CardDto(
+        Guid Id,
+        string Title,
+        string? Description,
+        Guid ColumnId
+    );
+
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.Json.Serialization;
-
-namespace Kanban.Domain.Boards
+﻿namespace Kanban.Domain.Boards
 {
     public sealed class Board
     {
@@ -30,7 +25,7 @@ namespace Kanban.Domain.Boards
                 Name = name.Trim()
 
             };
-            
+
             board._columns.Add(new Column(Guid.NewGuid(), "Todo", 1));
             board._columns.Add(new Column(Guid.NewGuid(), "Doing", 2));
             board._columns.Add(new Column(Guid.NewGuid(), "Done", 3));
@@ -69,7 +64,7 @@ namespace Kanban.Domain.Boards
         /// <exception cref="ArgumentException"></exception>
         public void MoveCard(Guid cardId, Guid targetColumnId)
         {
-            
+
             var card = _cards.Find(c => c.Id == cardId);
             if (card == null)
                 throw new ArgumentException("Card not found.", nameof(cardId));
@@ -77,7 +72,7 @@ namespace Kanban.Domain.Boards
             if (targetColumn == null)
                 throw new ArgumentException("Target column not found.", nameof(targetColumnId));
             card.MoveTo(targetColumnId);
-            
+
         }
 
 

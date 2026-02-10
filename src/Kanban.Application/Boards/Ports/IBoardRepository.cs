@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Kanban.Domain.Boards;
+﻿using Kanban.Domain.Boards;
 namespace Kanban.Application.Boards.Ports
 {
     internal interface IBoardRepository
