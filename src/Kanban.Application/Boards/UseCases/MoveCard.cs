@@ -6,15 +6,15 @@ namespace Kanban.Application.Boards.UseCases
     public sealed class MoveCard
     {
         private readonly IBoardRepository _boardRepository;
-        
+
         public MoveCard(IBoardRepository boardRepository)
         {
             _boardRepository = boardRepository;
         }
         public async Task<BoardDto?> Handle(
-            Guid boardId, 
-            Guid cardId, 
-            Guid targetColumnId, 
+            Guid boardId,
+            Guid cardId,
+            Guid targetColumnId,
             CancellationToken ct = default)
         {
             var board = await _boardRepository.GetById(boardId, ct);

@@ -2,8 +2,8 @@
 {
     public class MoveCardRequest
     {
-        public int CardId { get; set; }
-        public int TargetBoardId { get; set; }
-        public int TargetPosition { get; set; }
+        public Guid CardId { get; set; }
+        public Guid TargetBoardId { get; set; }
+        public Guid TargetColumnId { get; set; }
     }
 }

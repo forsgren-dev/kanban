@@ -1,8 +1,8 @@
-using Kanban.Api.Persistence;
 using Kanban.Api.Contracts.Requests;
+using Kanban.Api.Persistence;
+using Kanban.Application.Boards.Contracts;
 using Kanban.Application.Boards.Ports;
 using Kanban.Application.Boards.UseCases;
-using Kanban.Application.Boards.Contracts;
 
 
 namespace Kanban
@@ -13,18 +13,20 @@ namespace Kanban
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Adding Swagger for Minimal Api
+            // Adding Swagger to test minimal API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // Dependency Injection:
-            // Registering InMemoryBoardRepository as the implementation of IBoardRepository
+            // Dependency Injection
             builder.Services.AddSingleton<IBoardRepository, InMemoryBoardRepository>();
             builder.Services.AddTransient<CreateBoard>();
             builder.Services.AddTransient<GetBoard>();
             builder.Services.AddTransient<AddCard>();
+            builder.Services.AddTransient<MoveCard>();
 
             var app = builder.Build();
+            app.UseDefaultFiles();   // gör att index.html hittas automatiskt
+            app.UseStaticFiles();    // aktiverar wwwroot
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -74,6 +76,20 @@ namespace Kanban
                 return cardDto is null ? Results.NotFound() : Results.Ok(cardDto);
             })
             .WithName("AddCard")
+            .Produces<BoardDto>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status404NotFound);
+
+            app.MapPost("/boards/{id:guid}/cards/{cardId:guid}/move", async (
+                Guid id, Guid cardId, MoveCardRequest req, MoveCard useCase, CancellationToken ct) =>
+            {
+                if (req.TargetColumnId == Guid.Empty)
+                return Results.BadRequest(new { error = "Target column is required." });
+
+                var dto = await useCase.Handle(id, cardId, req.TargetColumnId, ct);
+                return dto is null ? Results.NotFound() : Results.Ok(dto);
+            })
+            .WithName("MoveCard")
             .Produces<BoardDto>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound);

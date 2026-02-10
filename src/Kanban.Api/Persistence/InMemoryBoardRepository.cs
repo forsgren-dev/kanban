@@ -1,6 +1,6 @@
-﻿using System.Collections.Concurrent;
-using Kanban.Application.Boards.Ports;
+﻿using Kanban.Application.Boards.Ports;
 using Kanban.Domain.Boards;
+using System.Collections.Concurrent;
 
 namespace Kanban.Api.Persistence
 {

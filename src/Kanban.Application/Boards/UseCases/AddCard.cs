@@ -13,13 +13,13 @@ namespace Kanban.Application.Boards.UseCases
         }
 
         public async Task<BoardDto?> Handle(
-            Guid boardId, 
-            string title, 
-            string description, 
+            Guid boardId,
+            string title,
+            string description,
             CancellationToken ct = default)
         {
             var board = await _boardRepository.GetById(boardId, ct);
-            if (board is null) 
+            if (board is null)
                 return null;
 
             board.AddCard(title, description);
