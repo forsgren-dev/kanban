@@ -10,12 +10,14 @@ namespace Kanban.Api.Persistence
 
         public Task Save(Board board, CancellationToken ct)
         {
+            ct.ThrowIfCancellationRequested();
             _store[board.Id] = board;
             return Task.CompletedTask;
         }
 
         public Task<Board?> GetById(Guid boardId, CancellationToken ct)
         {
+            ct.ThrowIfCancellationRequested();
             _store.TryGetValue(boardId, out var board);
             return Task.FromResult(board);
         }
