@@ -5,7 +5,7 @@ This repository is a **practice project for REST API architecture** built with *
 The repo contains:
 - `src/` (application source) :contentReference[oaicite:1]{index=1}
 - `Kanban.http` (HTTP scratch file for calling the API from VS/VS Code) :contentReference[oaicite:2]{index=2}
-- `Kanban.slnx` (solution in the newer `.slnx` format) :contentReference[oaicite:3]{index=3}
+- `Kanban.slnx` (solution in the newer `.slnx` format) 
 
 ---
 
