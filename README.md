@@ -29,8 +29,6 @@ The repo contains:
 - EF Core (ready to plug in)
 - Swagger / OpenAPI (recommended)
 
-> The repository description explicitly states it’s “ready for EF Core”. :contentReference[oaicite:4]{index=4}
-
 ---
 
 ## Getting started
