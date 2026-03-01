@@ -3,8 +3,9 @@
 This repository is a **practice project for REST API architecture** built with **ASP.NET Core Minimal APIs**, structured to be **ready for Entity Framework Core** integration. :contentReference[oaicite:0]{index=0}
 
 The repo contains:
-- `src/` (application source) :contentReference[oaicite:1]{index=1}
-- `Kanban.http` (HTTP scratch file for calling the API from VS/VS Code) :contentReference[oaicite:2]{index=2}
+- `src/` (application source)
+- 
+- `Kanban.http` (HTTP scratch file for calling the API from VS/VS Code) 
 - `Kanban.slnx` (solution in the newer `.slnx` format) 
 
 ---
