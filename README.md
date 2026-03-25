@@ -1,6 +1,6 @@
 # Kanban — Minimal API (ASP.NET Core) ready for EF Core
 
-This repository is a **practice project for REST API architecture** built with **ASP.NET Core Minimal APIs**, structured to be **ready for Entity Framework Core** integration. :contentReference[oaicite:0]{index=0}
+This repository is a **practice project for REST API architecture** built with **ASP.NET Core Minimal APIs**, structured to be **ready for Entity Framework Core** integration.
 
 ## The repo contains
 
